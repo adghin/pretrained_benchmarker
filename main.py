@@ -1,4 +1,5 @@
 """
+Benchmarks of pre-trained pytorch models on common continual learning datasets
 @author: adrian.ghinea@outlook.it
 """
 import pickle
@@ -9,6 +10,7 @@ import utils
 import numpy as np
 import matplotlib.pyplot as plt
 
+import timm
 import torch
 import torchvision as tv
 import torchvision.models as models
@@ -24,15 +26,27 @@ def parseArgs():
     """
     parser = argparse.ArgumentParser(description="Benchmark of pre-trained models on common continual learning datasets")
 
-    parser.add_argument("-m"     , "--model", type=str, help="Available models: resnet18, resnet34, resnet50, resnet101, resnet152, vit_b_16, vit_b_32, vit_l_16",required=True)
-    parser.add_argument("-d"     , "--dataset", type=str, help="Available datasets: cifar10, cifar100, tinyimagenet",required=True)
-    parser.add_argument("-b"     , "--batch_size", type=int, help="batch size for testing (default=32)",default=32)
-    parser.add_argument("-md"    , "--mask_dataloader", type=bool, help="Remove datasets' samples that doesn't have any matching with the dataset on which the model was pretrained on (FOR CIFAR-10 & CIFAR-100)", default=False)
+    parser.add_argument("-m"      , "--model", type=str, help="Available models: resnet18, resnet34, resnet50, resnet101, resnet152, vit_b_16, vit_b_32, vit_l_16",required=True)
+    parser.add_argument("-d"      , "--dataset", type=str, help="Available datasets: cifar10, cifar100, tinyimagenet",required=True)
+    parser.add_argument("-b"      , "--batch_size", type=int, help="batch size for testing (default=32)",default=32)
+    parser.add_argument("-gpu"    , "--gpu", type=int, help="Choose on which GPU to run the experiment",default=0)
+    parser.add_argument("-md"     , "--mask_dataloader", type=bool, help="Remove datasets' samples that doesn't have any matching with the dataset on which the model was pretrained on (FOR CIFAR-10 & CIFAR-100)", default=False)
     parser.add_argument("-preproc", "--preprocess", type=str, help="Use RESNET_CUSTOM for a custom preprocess transform on the dataset (ResNet & CIFAR)")
 
     args = parser.parse_args()
 
     return args
+
+def get_device():
+    """
+    Returns the GPU device if available else CPU.
+    """
+    gpu_id = args.gpu
+    
+    if torch.cuda.is_available():
+        return torch.device("cuda:"+str(gpu_id))
+    
+    return torch.device("cpu")
 
 def model():
     """
@@ -57,8 +71,8 @@ def dataset():
 
     if(parseArgs().preprocess == "RESNET_CUSTOM"):
         preprocess = transforms.Compose([
-                            transforms.Resize(68, interpolation=transforms.InterpolationMode.BILINEAR),
-                            transforms.CenterCrop(64),
+                            transforms.Resize(132, interpolation=transforms.InterpolationMode.BILINEAR),
+                            transforms.CenterCrop(128),
                             transforms.ToTensor(),
                             transforms.Normalize((0.485, 0.456, 0.406),(0.229, 0.224, 0.225))
                             ])
@@ -73,10 +87,11 @@ def dataset():
         #For TinyImagenet
         imported_module  = importlib.import_module('.'+parseArgs().dataset,'utils')
         annotation_path  = 'utils/tinyimagenet_annotations.csv'
-        image_dir_path   = 'utils/tinyimagenet-nohighres/images'
+        image_dir_path   = 'utils/tinyimagenet-nohd/images'
         test_dataset     = imported_module.MyTinyImagenet(root=image_dir_path,annotations_file=annotation_path,transform=default_weights.transforms())
 
     dataloader = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=False,drop_last=False)
+    print(len(dataloader))
 
     return dataloader
 
@@ -187,7 +202,10 @@ def evaluateModel(model):
     print('\nTest Accuracy: {:.2f}%'.format(100*correct/total))
 
 def main(args=None):
-    my_model = model()
-    evaluateModel(my_model)
+    #my_model = model()
+    avail_pretrained_models = timm.list_models(pretrained=True)
+    print(avail_pretrained_models)
+    pretrained_vitb16_in21k = timm.create_model('vit_base_patch16_224_in21k', pretrained=True)
+    evaluateModel(pretrained_vitb16_in21k)
 
 main()
