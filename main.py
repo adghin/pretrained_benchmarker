@@ -10,7 +10,6 @@ import utils
 import numpy as np
 import matplotlib.pyplot as plt
 
-import timm
 import torch
 import torchvision as tv
 import torchvision.models as models
@@ -37,7 +36,7 @@ def parseArgs():
 
     return args
 
-def get_device():
+def get_device(args):
     """
     Returns the GPU device if available else CPU.
     """
@@ -48,50 +47,81 @@ def get_device():
     
     return torch.device("cpu")
 
-def model():
+def get_model(args):
     """
     Load pre-trained model with default weights from torchvision.models
     """
-    args = parseArgs()
     model_name = args.model
     model_weights = "DEFAULT"
-    model = models.get_model(model_name,weights=model_weights)
+    
+    if model_name == 'vit_base_patch16_224':
+        from pathlib import Path
+        from timm.models import create_model
+        import models
+        import timm
 
-    return model
+        model = create_model('vit_base_patch16_224',pretrained=True)
+        print(model.default_cfg)
+        return model
+     
+    try: #PyTorch models
+        model = models.get_model(model_name,weights=model_weights)
+    except NameError:
+        raise NameError("Unknown model: " + model_name)
+    else:
+        return model
 
-def dataset():
+def get_dataloader(args):
     """
-    Load test dataset
+    Creates and returns test dataloader
     """
-    args = parseArgs()
-    dataset_name = args.dataset.upper()
-
-    transform_weights = models.get_model_weights(args.model)
-    default_weights = transform_weights.DEFAULT
-
-    if(parseArgs().preprocess == "RESNET_CUSTOM"):
+    dataset = args.dataset
+    
+    if args.model != 'vit_base_patch16_224':
+        transform_weights = models.get_model_weights(args.model)
+        default_weights = transform_weights.DEFAULT
+    
+    if(args.preprocess == "RESNET_CUSTOM"):
         preprocess = transforms.Compose([
-                            transforms.Resize(132, interpolation=transforms.InterpolationMode.BILINEAR),
-                            transforms.CenterCrop(128),
+                            transforms.Resize(256,interpolation=transforms.InterpolationMode.BILINEAR),
+                            transforms.CenterCrop(224),
                             transforms.ToTensor(),
                             transforms.Normalize((0.485, 0.456, 0.406),(0.229, 0.224, 0.225))
                             ])
     else:
-        preprocess= default_weights.transforms()
-
-    if hasattr(datasets,dataset_name):
+        if args.model != 'vit_base_patch16_224':
+            preprocess = default_weights.transforms()
+        else:
+            preprocess  = transforms.Compose([
+                            transforms.Resize(256,interpolation=transforms.InterpolationMode.BILINEAR),
+                            transforms.CenterCrop(224),
+                            transforms.ToTensor(),
+                            transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))
+                            ])
+    print(preprocess)
+    if('cifar' in dataset):
         #For CIFAR-10 and CIFAR-100
-        imported_dataset = getattr(datasets,dataset_name)
-        test_dataset     = imported_dataset(root='./data',train=False,transform=preprocess,download=True)
-    else:
-        #For TinyImagenet
-        imported_module  = importlib.import_module('.'+parseArgs().dataset,'utils')
-        annotation_path  = 'utils/tinyimagenet_annotations.csv'
-        image_dir_path   = 'utils/tinyimagenet-nohd/images'
-        test_dataset     = imported_module.MyTinyImagenet(root=image_dir_path,annotations_file=annotation_path,transform=default_weights.transforms())
+        imported_dataset = getattr(datasets,dataset.upper())
+        dataset_module   = imported_dataset(root='./data',train=False,transform=preprocess,download=True)
+    elif('imagenet' in dataset):
+        #TinyImagenet (HD & SD)
+        if(dataset == 'tinyimagenet'):
+            image_dir_path   = 'utils/tinyimagenet-nohd/images/'
+            annotation_path  = 'utils/tinyimagenet_annotations.csv'
+        if(dataset == 'tinyimagenet-hd'):
+            image_dir_path   = 'utils/tinyimagenet-hd/images/'
+            annotation_path  = 'utils/tinyimagenet_annotations.csv'
+        if(dataset == 'imagenetR'):
+            image_dir_path   = 'utils/imagenet-r/test/'
+            annotation_path  = 'utils/imagenet-r_annotations.csv'    
 
-    dataloader = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=False,drop_last=False)
-    print(len(dataloader))
+        imported_module = importlib.import_module('.' + 'create_dataset','utils')
+        dataset_module  = imported_module.CreateDataset(root=image_dir_path,annotations_file=annotation_path,transform=preprocess)
+    else:
+        raise NotImplementedError("Unknown dataset: " + dataset)
+
+    test_dataset = dataset_module
+    dataloader   = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=False,drop_last=False)
 
     return dataloader
 
@@ -145,7 +175,7 @@ def maskSoftmax(tensor):
 
     if isinstance(ground_truth,dict):   #CIFAR-10 & CIFAR-100                                            
         accepted_labels = sum([ground_truth[i] for i in ground_truth],[])       #list containing all classes that have a matching with cifar's labels
-    if isinstance(ground_truth,list):   #TinyImagenet
+    if isinstance(ground_truth,list):   #Variants of ImageNet
         accepted_labels = ground_truth
     
     for tens in tensor:
@@ -154,15 +184,18 @@ def maskSoftmax(tensor):
                 tens[i] = 0
     return tensor
 
-def evaluateModel(model):
+def evaluateModel(model,args):
     """
     Evaluate the model with accuracy on testset (correct_images/total_images)
     """
-    args = parseArgs()
     if(args.dataset == 'cifar10' or args.dataset == 'cifar100'):
         ground_truth = groundTruth(args.dataset)                                            #ground_truth contains matchings between CIFAR and Imagenet datasets
     
-    test_loader = dataset()
+    test_loader = get_dataloader(args)
+
+    device = get_device(args)
+
+    model.to(device)
     model.eval()
 
     correct = 0
@@ -170,21 +203,25 @@ def evaluateModel(model):
     
     with torch.no_grad():
         for image,label in tqdm(test_loader):
-
             if((args.mask_dataloader == True)):
-                assert args.dataset == 'cifar10' or args.dataset == 'cifar100', "A dataloader mask can be applied only on CIFAR-10 and CIFAR-100 dataset!"
+                assert args.dataset == 'cifar10' or args.dataset == 'cifar100', "A dataloader mask can onyl be applied on CIFAR-10 and CIFAR-100 dataset!"
 
                 masked_image, masked_label = maskDataloader(image,label)
                 image = masked_image
                 label = masked_label
-
-            prediction = model(image).softmax(dim=1)                                        #tensor with predictions for each sample
             
+            image, label = image.to(device), label.to(device)
+            
+            if args.model != 'vit_base_patch16_224':
+                prediction = model(image).softmax(dim=1)
+            else:
+                output = model(image)                                                           #tensor with predictions for each sample
+                prediction = output['logits'].softmax(dim=1)
+
             masked_prediction = maskSoftmax(prediction)                                     #remove unaccepted labels (i.e. labels of iamgenet that doesn't have a match with any label from cifars)
 
             pred_class_id = [idx.argmax().item() for idx in masked_prediction]              #get class_id from predictions
 
-            
             ground_labels = [idx.item() for idx in label]                                   #ground_labels: list of truth labels
 
             for i, label in enumerate(pred_class_id):
@@ -201,11 +238,10 @@ def evaluateModel(model):
     print("\nTotal: " + str(total))
     print('\nTest Accuracy: {:.2f}%'.format(100*correct/total))
 
-def main(args=None):
-    #my_model = model()
-    avail_pretrained_models = timm.list_models(pretrained=True)
-    print(avail_pretrained_models)
-    pretrained_vitb16_in21k = timm.create_model('vit_base_patch16_224_in21k', pretrained=True)
-    evaluateModel(pretrained_vitb16_in21k)
+def main():
+    args = parseArgs()
+    
+    model = get_model(args)
+    evaluateModel(model,args)
 
 main()
