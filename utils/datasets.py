@@ -18,15 +18,15 @@ def get_dataset(args: Namespace):
     preprocess = default_weights
     
     if dataset == 'cifar10':
-        test_dataset = eval_datasets.CIFAR10(root='../data/',train=False,transform=preprocess,download=True)
+        test_dataset = eval_datasets.CIFAR10(root='../data/',train=False,download=True,transform=preprocess)
     elif dataset == 'cifar100':
-        test_dataset = eval_datasets.CIFAR100(root='../data/',train=False,transform=preprocess,download=True)
+        test_dataset = eval_datasets.CIFAR100(root='../data/',train=False,download=True,transform=preprocess)
     elif dataset == 'tinyimagenet':
-        test_dataset = eval_datasets.TinyImagenet(root='../data/',transform=preprocess,download=True)
+        test_dataset = eval_datasets.TinyImagenet(root='../data/',download=True,transform=preprocess)
     elif dataset == 'tinyimagenet-hd':
-        test_dataset = eval_datasets.TinyImagenetHD(root='../data/',transform=preprocess,download=True)
+        test_dataset = eval_datasets.TinyImagenetHD(root='../data/',download=True,transform=preprocess)
     elif dataset == 'tinyimagenet-r':
-        test_dataset = eval_datasets.TinyImagenetR(root='../data/',transform=preprocess,download=True)
+        test_dataset = eval_datasets.TinyImagenetR(root='../data/',download=True,transform=preprocess)
     else:
         raise NotImplementedError('Unknown dataset: ' + dataset)
 
