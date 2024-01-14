@@ -32,7 +32,7 @@ class TinyImagenet(Dataset):
         """        
         self.transform          = transform
         self.root               = root
-        self.download           = True
+        self.download           = download
 
         abs_dir                 = os.path.dirname(__file__)
         path                    = os.path.join(abs_dir,root,'tinyimagenet-nohd')
