@@ -19,6 +19,9 @@ import torchvision.transforms as transforms
 from tqdm import tqdm
 from torch.utils.data import DataLoader
 
+from utils.conf import get_device
+import utils.get_dataset as get_dataset
+
 def parseArgs():
     """
     Arguments to use: model_name, dataset_name, batch_size
@@ -35,17 +38,6 @@ def parseArgs():
     args = parser.parse_args()
 
     return args
-
-def get_device(args):
-    """
-    Returns the GPU device if available else CPU.
-    """
-    gpu_id = args.gpu
-    
-    if torch.cuda.is_available():
-        return torch.device("cuda:"+str(gpu_id))
-    
-    return torch.device("cpu")
 
 def get_model(args):
     """
@@ -70,60 +62,6 @@ def get_model(args):
         raise NameError("Unknown model: " + model_name)
     else:
         return model
-
-def get_dataloader(args):
-    """
-    Creates and returns test dataloader
-    """
-    dataset = args.dataset
-    
-    if args.model != 'vit_base_patch16_224':
-        transform_weights = models.get_model_weights(args.model)
-        default_weights = transform_weights.DEFAULT
-    
-    if(args.preprocess == "RESNET_CUSTOM"):
-        preprocess = transforms.Compose([
-                            transforms.Resize(256,interpolation=transforms.InterpolationMode.BILINEAR),
-                            transforms.CenterCrop(224),
-                            transforms.ToTensor(),
-                            transforms.Normalize((0.485, 0.456, 0.406),(0.229, 0.224, 0.225))
-                            ])
-    else:
-        if args.model != 'vit_base_patch16_224':
-            preprocess = default_weights.transforms()
-        else:
-            preprocess  = transforms.Compose([
-                            transforms.Resize(256,interpolation=transforms.InterpolationMode.BILINEAR),
-                            transforms.CenterCrop(224),
-                            transforms.ToTensor(),
-                            transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))
-                            ])
-    print(preprocess)
-    if('cifar' in dataset):
-        #For CIFAR-10 and CIFAR-100
-        imported_dataset = getattr(datasets,dataset.upper())
-        dataset_module   = imported_dataset(root='./data',train=False,transform=preprocess,download=True)
-    elif('imagenet' in dataset):
-        #TinyImagenet (HD & SD)
-        if(dataset == 'tinyimagenet'):
-            image_dir_path   = 'utils/tinyimagenet-nohd/images/'
-            annotation_path  = 'utils/tinyimagenet_annotations.csv'
-        if(dataset == 'tinyimagenet-hd'):
-            image_dir_path   = 'utils/tinyimagenet-hd/images/'
-            annotation_path  = 'utils/tinyimagenet_annotations.csv'
-        if(dataset == 'imagenetR'):
-            image_dir_path   = 'utils/imagenet-r/test/'
-            annotation_path  = 'utils/imagenet-r_annotations.csv'    
-
-        imported_module = importlib.import_module('.' + 'create_dataset','utils')
-        dataset_module  = imported_module.CreateDataset(root=image_dir_path,annotations_file=annotation_path,transform=preprocess)
-    else:
-        raise NotImplementedError("Unknown dataset: " + dataset)
-
-    test_dataset = dataset_module
-    dataloader   = DataLoader(test_dataset,batch_size=args.batch_size,shuffle=False,drop_last=False)
-
-    return dataloader
 
 def imshow(img):
     img = img / 2 + 0.5
@@ -193,7 +131,7 @@ def evaluateModel(model,args):
     
     test_loader = get_dataloader(args)
 
-    device = get_device(args)
+    device = get_device(args.gpu_id)
 
     model.to(device)
     model.eval()
@@ -240,8 +178,10 @@ def evaluateModel(model,args):
 
 def main():
     args = parseArgs()
-    
-    model = get_model(args)
+
+    model   = get_model(args)
+    dataset = get_dataset(args) 
+
     evaluateModel(model,args)
 
 main()
