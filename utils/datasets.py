@@ -1,6 +1,5 @@
 from argparse import Namespace
 from datasets import eval_datasets
-from onedrivedownloader import download
 
 import torchvision.models as models
 from torch.utils.data import DataLoader
