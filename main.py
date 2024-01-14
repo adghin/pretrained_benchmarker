@@ -20,7 +20,7 @@ from tqdm import tqdm
 from torch.utils.data import DataLoader
 
 from utils.conf import get_device
-import utils.get_dataset as get_dataset
+from utils.datasets import get_dataset, get_dataloader
 
 def parseArgs():
     """
