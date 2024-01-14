@@ -9,7 +9,9 @@ from PIL import Image
 from typing import Tuple
 
 from torchvision import datasets
-from torchvision.utils.data import Dataset
+from torch.utils.data import Dataset
+
+from onedrivedownloader import download
 
 import torchvision.transforms as transforms
 
@@ -22,7 +24,7 @@ class TinyImagenet(Dataset):
     All images will be transformed according to the default weights of
     the model used for the evaluation.
     """
-    def __init__(self,root='./data',transform,download):
+    def __init__(self,root,transform,download: bool):
         """
         param: annotations_file (string): path to the csv file with annotations
         param: img_dir          (string): path to dir with images from validation set
@@ -30,25 +32,28 @@ class TinyImagenet(Dataset):
         """        
         self.transform          = transform
         self.root               = root
-        sef.download            = download
+        self.download           = download
+
+        abs_dir                 = os.path.dirname(__file__)
+        path                    = os.path.join(abs_dir,root,'tinyimagenet-nohd')
 
         if self.download:
-            if os.path.isdir(root) and len(os.listdir(root)) > 0:
+            if os.path.isdir(path) and len(os.listdir(path)) > 0:
                 print("Dataset already downloaded")
             else:
                 print("Downloading dataset")
                 ln = 'https://studentiunict-my.sharepoint.com/:u:/g/personal/ghndrn00t01z129z_studium_unict_it/EdZ5w35EkRJCuOHi5I9-pjIBI5BmjY9i3cGvEYkwiBcTtQ?e=J11g32'
-                download(ln, filename=os.path.join(root, 'eval-tiny-imagenet-nohd.zip'), unzip=True, unzip_path=root, clean=True)
+                download(ln, filename=os.path.join(path, 'eval-tiny-imagenet-nohd.zip'), unzip=True, unzip_path=path, clean=True)
 
-        self.image_path         = os.path.join(root,'tinyimagenet-nohd/images')
-        self.annotations_file   = os.path.join(root,'tinyimagenet-nohd/tinyimagenet_annotations.csv')
+        self.image_path         = os.path.join(path,'tinyimagenet-nohd/images')
+        self.annotations_file   = os.path.join(path,'tinyimagenet-nohd/tinyimagenet_annotations.csv')
         self.img_labels         = pd.read_csv(self.annotations_file)
 
     def __len__(self):
         #To return the size of the dataset
         return len(self.img_labels)
     
-    def __getitem__(self,idx) -> Tuple[image,label]:
+    def __getitem__(self,idx):
         img_path        = os.path.join(self.image_path,self.img_labels.iloc[idx,0])
 
         #To return a PIL Image
@@ -70,7 +75,7 @@ class TinyImagenetHD(Dataset):
     All images will be transformed according to the default weights of
     the model used for the evaluation.
     """
-    def __init__(self,root='./data',transform,download):
+    def __init__(self,root,transform,download):
         """
         param: annotations_file (string): path to the csv file with annotations
         param: img_dir          (string): path to dir with images from validation set
@@ -78,7 +83,7 @@ class TinyImagenetHD(Dataset):
         """        
         self.transform          = transform
         self.root               = root
-        sef.download            = download
+        self.download            = download
 
         if self.download:
             if os.path.isdir(root) and len(os.listdir(root)) > 0:
@@ -96,7 +101,7 @@ class TinyImagenetHD(Dataset):
         #To return the size of the dataset
         return len(self.img_labels)
     
-    def __getitem__(self,idx) -> Tuple[image,label]:
+    def __getitem__(self,idx):
         img_path        = os.path.join(self.image_path,self.img_labels.iloc[idx,0])
 
         #To return a PIL Image
@@ -118,7 +123,7 @@ class TinyImagenetR(Dataset):
     All images will be transformed according to the default weights of
     the model used for the evaluation.
     """
-    def __init__(self,root='./data',transform,download):
+    def __init__(self,root,transform,download):
         """
         param: annotations_file (string): path to the csv file with annotations
         param: img_dir          (string): path to dir with images from validation set
@@ -144,7 +149,7 @@ class TinyImagenetR(Dataset):
         #To return the size of the dataset
         return len(self.img_labels)
     
-    def __getitem__(self,idx) -> Tuple[image,label]:
+    def __getitem__(self,idx):
         img_path        = os.path.join(self.image_path,self.img_labels.iloc[idx,0])
 
         #To return a PIL Image
@@ -158,7 +163,7 @@ class TinyImagenetR(Dataset):
         return image,label
 
 class CIFAR10(datasets.CIFAR10):
-    def __init__(self, root='./data',train=False,transform,download):
+    def __init__(self,root,train,transform,download):
         
         self.transform  = transform
         self.download   = download
@@ -168,7 +173,7 @@ class CIFAR10(datasets.CIFAR10):
         #To return the size of the dataset
         return len(self.img_labels)
 
-    def __getitem__(self,idx) -> Tuple[image,label]:
+    def __getitem__(self,idx):
         imgage, label      = self.data[idx], self.targets[idx]
 
         #To return a PIL Image
@@ -181,7 +186,7 @@ class CIFAR10(datasets.CIFAR10):
         return image,label
 
 class CIFAR100(Dataset):
-    def __init__(self, root='./data',train=False,transform,download):
+    def __init__(self,root,train,transform,download):
         
         self.transform  = transform
         self.download   = download
@@ -191,7 +196,7 @@ class CIFAR100(Dataset):
         #To return the size of the dataset
         return len(self.img_labels)
 
-    def __getitem__(self,idx) -> Tuple[image,label]:
+    def __getitem__(self,idx):
         imgage, label      = self.data[idx], self.targets[idx]
 
         #To return a PIL Image
