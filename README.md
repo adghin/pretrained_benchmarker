@@ -1,4 +1,3 @@
-
 # Benchmarks of pre-trained models on common continual learning datasets
 
 The script allows the evaluation of pre-trained models on common continual learning datasets. 
