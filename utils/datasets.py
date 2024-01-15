@@ -1,12 +1,13 @@
 from argparse import Namespace
-from datasets import eval_datasets
 
+import matplotlib.pyplot as plt
+import torchvision as tv
 import torchvision.models as models
 import torchvision.transforms as transforms
-
-from utils.conf import base_path
-
 from torch.utils.data import DataLoader
+
+from datasets import eval_datasets
+from utils.conf import base_path
 
 def get_dataset(args):
     """
