@@ -57,7 +57,6 @@ def imshow(img):
     npimg = img.numpy()   
     plt.imshow(np.transpose(npimg, (1, 2, 0))) 
     plt.show()
-
     #Use this function by calling imshow(tv.utils.make_grid(image))
 
 def evaluateModel(model,dataset,device,mask_dl=False):
@@ -78,9 +77,7 @@ def evaluateModel(model,dataset,device,mask_dl=False):
     
     with torch.no_grad():
         for image,label in tqdm(test_loader):
-            if mask_dl:
-                assert dataset.DS_NAME == 'cifar10' or dataset.DS_NAME == 'cifar100', "A dataloader mask can only be applied on CIFAR-10 and CIFAR-100 dataset!"
-
+            if mask_dl and dl_mask_eligible(dataset):
                 masked_image, masked_label = maskDataloader(image,label,dataset.DS_NAME)
                 image, label = masked_image, masked_label
             
