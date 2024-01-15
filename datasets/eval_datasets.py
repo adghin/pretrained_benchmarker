@@ -59,9 +59,10 @@ class TinyImagenet(Dataset):
 
         #Apply augmentation (if given)
         if self.transform is not None:
-            image       = self.transform(image)
+            image       = self.transform(original_img)
+            return image,label
             
-        return image,label
+        return original_img,label
 
 class TinyImagenetHD(Dataset):
     """
@@ -111,9 +112,10 @@ class TinyImagenetHD(Dataset):
 
         #Apply augmentation (if given)
         if self.transform is not None:
-            image       = self.transform(image)
-            
-        return image,label
+            image       = self.transform(original_img)
+            return image,label
+        
+        return original_img,label
 
 class TinyImagenetR(Dataset):
     """
@@ -163,9 +165,10 @@ class TinyImagenetR(Dataset):
 
         #Apply augmentation (if given)
         if self.transform is not None:
-            image       = self.transform(image)
+            image       = self.transform(original_img)
+            return image,label
             
-        return image,label
+        return original_img,label
 
 class CIFAR10(datasets.CIFAR10):
     def __init__(self,root,train,transform,download):
