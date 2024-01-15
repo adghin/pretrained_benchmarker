@@ -11,7 +11,7 @@ import torchvision.models as models
 from tqdm import tqdm
 
 from utils.conf import get_device
-from utils.datasets import get_dataset, get_dataloader, imshow
+from utils.datasets import get_dataset, get_dataloader, imshow, dl_mask_eligible
 from mappings.masks import maskSoftmax, maskDataloader, groundTruth
 
 def parseArgs():
