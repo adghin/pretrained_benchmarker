@@ -38,9 +38,9 @@ def get_dataset(args: Namespace):
         
     return dataset
 
-def get_dataloader(dataset,args):
+def get_dataloader(dataset,batch_size):
     """
     Creates the dataloader for the desired dataset
     :return: dataloader
     """
-    return DataLoader(dataset,batch_size=args.batch_size,shuffle=False,drop_last=False)
+    return DataLoader(dataset,batch_size=batch_size,shuffle=False,drop_last=False)
