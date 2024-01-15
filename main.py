@@ -31,7 +31,8 @@ def parseArgs():
 
 def get_model(model):
     """
-    Load the pre-trained model with default weights from torchvision.models
+    Load the pre-trained model with its default weights
+    :return: model instance
     """
     model_name = model
     model_weights = 'DEFAULT'
