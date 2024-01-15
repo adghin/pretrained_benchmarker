@@ -81,8 +81,8 @@ def evaluateModel(model,dataset,device,mask_dl=False):
 
             total += label.shape[0]
     
-    print("\nCorrect: " + str(correct))
-    print("\nTotal: " + str(total))
+    print('\nCorrect: ' + str(correct))
+    print('\nTotal: ' + str(total))
     print('\nTest Accuracy: {:.2f}%'.format(100*correct/total))
 
 def main():
