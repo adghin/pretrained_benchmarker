@@ -23,7 +23,7 @@ def get_dataset(args):
     default_weights = transform_weights.DEFAULT
 
     #New preprocessings can be added here
-    preprocess= default_weights.transforms()
+    preprocess = default_weights.transforms()
 
     print(preprocess)
     
