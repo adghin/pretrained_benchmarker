@@ -45,9 +45,11 @@ def get_dataloader(dataset):
     """
     return DataLoader(dataset,batch_size=32,shuffle=False,drop_last=False)
 
-def dl_mask_eligible():
+def dl_mask_eligible(dataset):
     """
     A dataloader mask can only be applied on datasets that do not have a 1:1 relationship with the source target (i.e. CIFAR10-ImageNet)
     Assert that the dataset is eligible for a dataloader mask.
     """
+    DS_ELIGIBLE = ['cifar10','cifar100']
+    assert dataset.DS_NAME in DS_ELIGIBLE, "A dataloader mask cannot be applied on this dataset!"
     
