@@ -3,6 +3,8 @@ Benchmarks of pre-trained pytorch models on common continual learning datasets
 @author: adrian.ghinea@outlook.it
 """
 
+import pickle
+
 def groundTruth(dataset):
     """
     Get the ground truth for each dataset.
