@@ -64,7 +64,7 @@ def evaluateModel(model,dataset,device,mask_dl=False):
     """
     Evaluate model's accuracy (correct/total).
     """
-    if dataset == 'cifar10' or dataset == 'cifar100':
+    if dataset.DS_MASK:                                                                        #if dataset has a mask, apply it
         ground_truth = groundTruth(dataset)                                                    #mappings between CIFAR and Imagenet datasets
     else:
         ground_truth = None
@@ -79,15 +79,15 @@ def evaluateModel(model,dataset,device,mask_dl=False):
     with torch.no_grad():
         for image,label in tqdm(test_loader):
             if mask_dl:
-                assert args.dataset == 'cifar10' or args.dataset == 'cifar100', "A dataloader mask can only be applied on CIFAR-10 and CIFAR-100 dataset!"
+                assert dataset.DS_NAME == 'cifar10' or dataset.DS_NAME == 'cifar100', "A dataloader mask can only be applied on CIFAR-10 and CIFAR-100 dataset!"
 
-                masked_image, masked_label = maskDataloader(image,label,args.dataset)
+                masked_image, masked_label = maskDataloader(image,label,dataset.DS_NAME)
                 image, label = masked_image, masked_label
             
             image, label = image.to(device), label.to(device)
 
             prediction      = model(image).softmax(dim=1)
-            prediction_mask = maskSoftmax(prediction,args.dataset)                              #remove unaccepted labels (i.e. labels of imagenet that doesn't have a match with any label of cifar10/100)
+            prediction_mask = maskSoftmax(prediction,dataset.DS_NAME)                           #remove unaccepted labels (i.e. labels of imagenet that doesn't have a match with any label of cifar10/100)
 
             preds           = [idx.argmax().item() for idx in prediction_mask]                  #get class_id from predictions
             ground_labels   = [idx.item() for idx in label]                                     #ground_labels: list of truth labels
