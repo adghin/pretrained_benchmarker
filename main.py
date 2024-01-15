@@ -1,9 +1,10 @@
 """
 Benchmarks of pre-trained pytorch models on common continual learning datasets.
 @author: adrian.ghinea@outlook.it
+@version: final release, 15/01/2024
 """
+
 import argparse
-import numpy as np
 
 import torch
 import torchvision.models as models
@@ -34,12 +35,12 @@ def get_model(model):
     Load the pre-trained model with default weights from torchvision.models
     """
     model_name = model
-    model_weights = "DEFAULT"
+    model_weights = 'DEFAULT'
 
-    try: #PyTorch models
+    try:
         model = models.get_model(model_name,weights=model_weights)
     except NameError:
-        raise NameError("Unknown model: " + model_name)
+        raise NameError('Unknown model: ' + model_name)
     else:
         return model
 
@@ -47,8 +48,8 @@ def evaluateModel(model,dataset,device,mask_dl=False):
     """
     Evaluate model's accuracy (correct/total).
     """
-    if hasattr(dataset,'DS_MASK'):                                                                         #if dataset has a mask, apply it
-        ground_truth = groundTruth(dataset.DS_MASK)                                                        #mappings between CIFAR and Imagenet datasets
+    if hasattr(dataset,'DS_MASK'):                                                              #if dataset has a mask, apply it
+        ground_truth = groundTruth(dataset.DS_MASK)                                             #mappings between CIFAR and Imagenet datasets
     else:
         ground_truth = None
 
@@ -80,7 +81,7 @@ def evaluateModel(model,dataset,device,mask_dl=False):
 
             total += label.shape[0]
     
-    print("\n\nCorrect: " + str(correct))
+    print("\nCorrect: " + str(correct))
     print("\nTotal: " + str(total))
     print('\nTest Accuracy: {:.2f}%'.format(100*correct/total))
 
