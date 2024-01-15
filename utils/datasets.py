@@ -36,7 +36,7 @@ def get_dataset(args):
     else:
         raise NotImplementedError('Unknown dataset: ' + dataset)
         
-    return dataset
+    return test_dataset
 
 def get_dataloader(dataset):
     """
