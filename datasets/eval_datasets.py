@@ -161,11 +161,11 @@ class ImagenetR(Dataset):
         return len(self.img_labels)
     
     def __getitem__(self,idx):
-        img_path        = os.path.join(self.image_path,self.img_labels.iloc[idx,1])
+        img_path        = os.path.join(self.image_path,self.img_labels.iloc[idx,0])
 
         #To return a PIL Image
         original_img    = Image.open(img_path).convert('RGB')                                 
-        label           = self.img_labels.iloc[idx,0]                                        
+        label           = self.img_labels.iloc[idx,1]                                        
 
         #Apply augmentation (if given)
         if self.transform is not None:
