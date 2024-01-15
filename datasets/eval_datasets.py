@@ -100,7 +100,7 @@ class TinyImagenetHD(Dataset):
                 download(ln, filename=os.path.join(root, 'eval-tinyimagenet-hd.zip'), unzip=True, unzip_path=root, clean=True)
 
         self.image_path         = os.path.join(path,'images')
-        self.annotations_file   = os.path.join(root,'tinyimagenet_annotations.csv')
+        self.annotations_file   = os.path.join(path,'tinyimagenet_annotations.csv')
         self.img_labels         = pd.read_csv(self.annotations_file)
 
     def __len__(self):
