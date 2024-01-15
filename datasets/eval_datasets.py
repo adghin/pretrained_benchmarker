@@ -24,7 +24,7 @@ class TinyImagenet(Dataset):
     All images will be transformed according to the default weights of
     the model used for the evaluation.
     """
-    def __init__(self,root,transform,download: bool = True):
+    def __init__(self,root,transform,download: bool):
         """
         param: annotations_file (string): path to the csv file with annotations
         param: img_dir          (string): path to dir with images from validation set
