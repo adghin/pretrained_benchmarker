@@ -38,7 +38,7 @@ def get_dataset(args: Namespace):
         
     return dataset
 
-def get_dataloader(dataset):
+def get_dataloader(dataset,args):
     """
     Creates the dataloader for the desired dataset
     :return: dataloader
