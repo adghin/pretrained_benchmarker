@@ -60,12 +60,12 @@ def imshow(img):
 
     #Use this function by calling imshow(tv.utils.make_grid(image))
 
-def evaluateModel(model,dataset,device):
+def evaluateModel(model,dataset,device,mask_dl=False):
     """
     Evaluate model's accuracy (correct/total).
     """
     if dataset == 'cifar10' or dataset == 'cifar100':
-        ground_truth = groundTruth(dataset)                                                #mappings between CIFAR and Imagenet datasets
+        ground_truth = groundTruth(dataset)                                                    #mappings between CIFAR and Imagenet datasets
     else:
         ground_truth = None
 
@@ -78,7 +78,7 @@ def evaluateModel(model,dataset,device):
     
     with torch.no_grad():
         for image,label in tqdm(test_loader):
-            if((args.mask_dataloader == True)):
+            if mask_dl:
                 assert args.dataset == 'cifar10' or args.dataset == 'cifar100', "A dataloader mask can only be applied on CIFAR-10 and CIFAR-100 dataset!"
 
                 masked_image, masked_label = maskDataloader(image,label,args.dataset)
@@ -110,9 +110,9 @@ def main():
     device  = get_device(args.gpu)
     model   = get_model(args.model)
 
-    print(dataset)
-    print(type(dataset))
-
-    evaluateModel(model,dataset,device)
+    if args.mask_dataloader:
+        evaluateModel(model,dataset,device,mask_dl=True)
+    else:
+        evaluateModel(model,dataset,device)
 
 main()
