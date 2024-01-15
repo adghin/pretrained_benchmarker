@@ -35,8 +35,8 @@ def get_dataset(args):
         test_dataset = eval_datasets.TinyImagenet(root=base_path(),transform=preprocess,download=True)
     elif dataset == 'tinyimagenet-hd':
         test_dataset = eval_datasets.TinyImagenetHD(root=base_path(),transform=preprocess,download=True)
-    elif dataset == 'tinyimagenet-r':
-        test_dataset = eval_datasets.TinyImagenetR(root=base_path(),transform=preprocess,download=True)
+    elif dataset == 'imagenet-r':
+        test_dataset = eval_datasets.ImagenetR(root=base_path(),transform=preprocess,download=True)
     else:
         raise NotImplementedError('Unknown dataset: ' + dataset)
         
