@@ -64,8 +64,8 @@ def evaluateModel(model,dataset,device,mask_dl=False):
     """
     Evaluate model's accuracy (correct/total).
     """
-    if hasattr(dataset,'DS_MASK'):                                                                 #if dataset has a mask, apply it
-        ground_truth = groundTruth(dataset)                                                        #mappings between CIFAR and Imagenet datasets
+    if hasattr(dataset,'DS_MASK'):                                                                         #if dataset has a mask, apply it
+        ground_truth = groundTruth(dataset.DS_MASK)                                                        #mappings between CIFAR and Imagenet datasets
     else:
         ground_truth = None
 
