@@ -20,7 +20,7 @@ Available datasets
 - Tiny-ImageNet;
 - ImageNet-R.
 
-The preprocessing applied on each dataset is the model's default one.
+The preprocessing applied on each dataset is the model's default inference transform recipe.
 
 Usage 
 -
@@ -32,3 +32,5 @@ To use the script, run:
 To see the list of available models and datasets names, along with optional arguments, simply run:
 
     python main.py -h
+
+To add new datasets, create a new class within `datasets/eval_datasets.py` and load it in `utils/datasets.py`.
