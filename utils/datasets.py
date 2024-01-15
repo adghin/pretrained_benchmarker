@@ -3,6 +3,9 @@ from datasets import eval_datasets
 
 import torchvision.models as models
 import torchvision.transforms as transforms
+
+from utils.conf import base_path
+
 from torch.utils.data import DataLoader
 
 def get_dataset(args: Namespace):
@@ -21,15 +24,15 @@ def get_dataset(args: Namespace):
     print(preprocess)
     
     if dataset == 'cifar10':
-        test_dataset = eval_datasets.CIFAR10(root='../data/',train=False,transform=preprocess,download=True)
+        test_dataset = eval_datasets.CIFAR10(root=base_path(),train=False,transform=preprocess,download=True)
     elif dataset == 'cifar100':
-        test_dataset = eval_datasets.CIFAR100(root='../data/',train=False,transform=preprocess,download=True)
+        test_dataset = eval_datasets.CIFAR100(root=base_path(),train=False,transform=preprocess,download=True)
     elif dataset == 'tinyimagenet':
-        test_dataset = eval_datasets.TinyImagenet(root='../data/',transform=preprocess,download=True)
+        test_dataset = eval_datasets.TinyImagenet(root=base_path(),transform=preprocess,download=True)
     elif dataset == 'tinyimagenet-hd':
-        test_dataset = eval_datasets.TinyImagenetHD(root='../data/',transform=preprocess,download=True)
+        test_dataset = eval_datasets.TinyImagenetHD(root=base_path(),transform=preprocess,download=True)
     elif dataset == 'tinyimagenet-r':
-        test_dataset = eval_datasets.TinyImagenetR(root='../data/',transform=preprocess,download=True)
+        test_dataset = eval_datasets.TinyImagenetR(root=base_path(),transform=preprocess,download=True)
     else:
         raise NotImplementedError('Unknown dataset: ' + dataset)
         
