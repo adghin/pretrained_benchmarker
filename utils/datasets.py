@@ -52,7 +52,7 @@ def dl_mask_eligible(dataset):
     Assert that the dataset is eligible for a dataloader mask.
     """
     DS_ELIGIBLE = ['cifar10','cifar100']
-    assert dataset.DS_NAME in DS_ELIGIBLE, "A dataloader mask cannot be applied on this dataset!"
+    return assert dataset.DS_NAME in DS_ELIGIBLE, "A dataloader mask cannot be applied on this dataset!"
 
 def imshow(img):
     """
