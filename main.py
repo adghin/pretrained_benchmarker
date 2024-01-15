@@ -65,6 +65,8 @@ def evaluateModel(model,dataset,device,mask_dl=False):
             if mask_dl and dl_mask_eligible(dataset):
                 masked_image, masked_label = maskDataloader(image,label,dataset.DS_NAME)
                 image, label = masked_image, masked_label
+
+            imshow(image)
             
             image, label = image.to(device), label.to(device)
 
