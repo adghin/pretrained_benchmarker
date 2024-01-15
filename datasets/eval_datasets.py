@@ -189,7 +189,7 @@ class CIFAR10(datasets.CIFAR10):
         super(CIFAR10, self).__init__(root, train, transform, download=not self._check_integrity())
 
     def __getitem__(self,idx):
-        image, label    = self.data[index], self.targets[index]
+        image, label    = self.data[idx], self.targets[idx]
 
         # to return a PIL Image
         image = Image.fromarray(image)
@@ -213,7 +213,7 @@ class CIFAR100(Dataset):
         super(CIFAR10, self).__init__(root, train, transform, download=not self._check_integrity())
 
     def __getitem__(self,idx):
-        image, label    = self.data[index], self.targets[index]
+        image, label    = self.data[idx], self.targets[idx]
 
         # to return a PIL Image
         image = Image.fromarray(image)                                          
