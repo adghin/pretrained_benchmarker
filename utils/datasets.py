@@ -23,11 +23,11 @@ def get_dataset(args: Namespace):
     elif dataset == 'cifar100':
         test_dataset = eval_datasets.CIFAR100(root='../data/',train=False,transform=preprocess,download=True)
     elif dataset == 'tinyimagenet':
-        test_dataset = eval_datasets.TinyImagenet(root='../data/',download=True,transform=preprocess,download=True)
+        test_dataset = eval_datasets.TinyImagenet(root='../data/',transform=preprocess,download=True)
     elif dataset == 'tinyimagenet-hd':
-        test_dataset = eval_datasets.TinyImagenetHD(root='../data/',download=True,transform=preprocess,download=True)
+        test_dataset = eval_datasets.TinyImagenetHD(root='../data/',transform=preprocess,download=True)
     elif dataset == 'tinyimagenet-r':
-        test_dataset = eval_datasets.TinyImagenetR(root='../data/',download=True,transform=preprocess,download=True)
+        test_dataset = eval_datasets.TinyImagenetR(root='../data/',transform=preprocess,download=True)
     else:
         raise NotImplementedError('Unknown dataset: ' + dataset)
         
