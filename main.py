@@ -60,7 +60,7 @@ def imshow(img):
 
     #Use this function by calling imshow(tv.utils.make_grid(image))
 
-def evaluateModel(model,dataset,device,args):
+def evaluateModel(model,dataset,device):
     """
     Evaluate model's accuracy (correct/total).
     """
