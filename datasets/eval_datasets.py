@@ -186,8 +186,7 @@ class CIFAR10(datasets.CIFAR10):
     def __init__(self,root,train,transform,download):
         
         self.transform  = transform
-        self.download   = download
-        super(CIFAR10, self).__init__(root, train, transform, download=download)
+        super(CIFAR10, self).__init__(root, train, transform, download=not self._check_integrity())
 
     def __len__(self):
         #To return the size of the dataset
@@ -215,8 +214,7 @@ class CIFAR100(Dataset):
     def __init__(self,root,train,transform,download):
         
         self.transform  = transform
-        self.download   = download
-        super(CIFAR10, self).__init__(root, train, transform, download=download)
+        super(CIFAR10, self).__init__(root, train, transform, download=not self._check_integrity())
 
     def __len__(self):
         #To return the size of the dataset
