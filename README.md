@@ -34,3 +34,10 @@ To see the list of available models and datasets names, along with optional argu
     python main.py -h
 
 To add new datasets, create a new class within `datasets/eval_datasets.py` and load it in `utils/datasets.py`.
+
+The mappings between ImageNet1k and the target datasets can be found in the `*.xlsx` files under `mappings/`. 
+
+TODO
+-
+
+Create the `*.pkl` with the mappings of the excel files.
