@@ -30,8 +30,11 @@ class TinyImagenet(Dataset):
         self.root               = root
         self.download           = download
 
+        self.dataset_name       = 'tinyimagenet-nohd'
+        path                    = os.path.join(root,self.dataset_name)
+        
         if download:
-            if os.path.isdir(root) and len(os.listdir(root)) > 0:
+            if os.path.isdir(path) and len(os.listdir(path)) > 0:
                 print("Dataset already downloaded")
             else:
                 from onedrivedownloader import download
