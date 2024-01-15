@@ -189,11 +189,11 @@ class CIFAR10(datasets.CIFAR10):
         super(CIFAR10, self).__init__(root, train, transform, download=not self._check_integrity())
 
     def __getitem__(self,idx):
-        imgage, label      = self.data[idx], self.targets[idx]
+        image, label    = self.data[index], self.targets[index]
 
-        #To return a PIL Image
-        image   = Image.fromarray(image)                                                 
-
+        # to return a PIL Image
+        image = Image.fromarray(image)
+                                               
         #Apply augmentation (if given)
         if self.transform is not None:
             image = self.transform(image)
@@ -213,10 +213,10 @@ class CIFAR100(Dataset):
         super(CIFAR10, self).__init__(root, train, transform, download=not self._check_integrity())
 
     def __getitem__(self,idx):
-        imgage, label      = self.data[idx], self.targets[idx]
+        image, label    = self.data[index], self.targets[index]
 
-        #To return a PIL Image
-        image   = Image.fromarray(image)                                                 
+        # to return a PIL Image
+        image = Image.fromarray(image)                                          
 
         #Apply augmentation (if given)
         if self.transform is not None:
