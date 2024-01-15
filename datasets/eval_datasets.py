@@ -34,6 +34,9 @@ class TinyImagenet(Dataset):
         base_path               = os.path.join(abs_dir,root)
         path                    = os.path.join(abs_dir,root,'tinyimagenet-nohd')
 
+        print(base_path)
+        print(path)
+
         if download:
             if os.path.isdir(path) and len(os.listdir(path)) > 0:
                 print("Dataset already downloaded")
