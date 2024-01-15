@@ -20,6 +20,8 @@ class TinyImagenet(Dataset):
     All images will be transformed according to the default weights of
     the model used for the evaluation.
     """
+    DATASET_NAME = 'tinyimagenet'
+    
     def __init__(self,root,transform,download):
         """
         param: annotations_file (string): path to the csv file with annotations
@@ -73,6 +75,8 @@ class TinyImagenetHD(Dataset):
     All images will be transformed according to the default weights of
     the model used for the evaluation.
     """
+    DATASET_NAME = 'tinyimagenet-hd'
+    
     def __init__(self,root,transform,download):
         """
         param: annotations_file (string): path to the csv file with annotations
@@ -126,6 +130,8 @@ class TinyImagenetR(Dataset):
     All images will be transformed according to the default weights of
     the model used for the evaluation.
     """
+    DATASET_NAME = 'tinyimagenet-r'
+    
     def __init__(self,root,transform,download):
         """
         param: annotations_file (string): path to the csv file with annotations
