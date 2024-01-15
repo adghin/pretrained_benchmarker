@@ -31,19 +31,18 @@ def parseArgs():
 
     parser.add_argument("-m"      , "--model", type=str, help="Available models: resnet18, resnet34, resnet50, resnet101, resnet152, vit_b_16, vit_b_32, vit_l_16",required=True)
     parser.add_argument("-d"      , "--dataset", type=str, help="Available datasets: cifar10, cifar100, tinyimagenet, tinyimagenet-hd, tinyimagenet-r",required=True)
-    parser.add_argument("-b"      , "--batch_size", type=int, help="batch size for testing (default=32)",default=32)
-    parser.add_argument("-gpu"    , "--gpu", type=int, help="Choose on which GPU to run the experiment",default=0)
     parser.add_argument("-md"     , "--mask_dataloader", type=bool, help="Remove datasets' samples that doesn't have any matching with the dataset on which the model was pretrained on (FOR CIFAR-10 & CIFAR-100)", default=False)
+    parser.add_argument("-gpu"    , "--gpu", type=int, help="Choose on which GPU to run the experiment",default=0)
 
     args = parser.parse_args()
 
     return args
 
-def get_model(args):
+def get_model(model):
     """
     Load the pre-trained model with default weights from torchvision.models
     """
-    model_name = args.model
+    model_name = model
     model_weights = "DEFAULT"
 
     try: #PyTorch models
@@ -66,7 +65,7 @@ def evaluateModel(model,dataset,device,args):
     Evaluate model's accuracy (correct/total).
     """
     if dataset == 'cifar10' or dataset == 'cifar100':
-        ground_truth = groundTruth(args.dataset)                                                #mappings between CIFAR and Imagenet datasets
+        ground_truth = groundTruth(dataset)                                                #mappings between CIFAR and Imagenet datasets
     else:
         ground_truth = None
 
@@ -107,10 +106,12 @@ def evaluateModel(model,dataset,device,args):
 def main():
     args = parseArgs()
 
-    model   = get_model(args)
-    dataset = get_dataset(args)
-    device = get_device(args.gpu)
+    device  = get_device(args.gpu)
+    model   = get_model(args.model)
+    dataset = get_dataset(args.dataset)
+    print(dataset)
+    print(type(dataset))
 
-    evaluateModel(model,dataset,device,args)
+    evaluateModel(model,dataset,device)
 
 main()
