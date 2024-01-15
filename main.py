@@ -109,7 +109,7 @@ def main():
 
     model   = get_model(args)
     dataset = get_dataset(args)
-    device = get_device(args.gpu_id)
+    device = get_device(args.gpu)
 
     evaluateModel(model,dataset,device,args)
 
