@@ -62,7 +62,6 @@ def evaluateModel(model,dataset,device,mask_dl=False):
     with torch.no_grad():
         for image,label in tqdm(test_loader):
             if mask_dl and dl_mask_eligible(dataset):
-                print("yes")
                 masked_image, masked_label = maskDataloader(image,label,dataset.DS_NAME)
                 image, label = masked_image, masked_label
             
