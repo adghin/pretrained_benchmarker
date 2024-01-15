@@ -208,8 +208,8 @@ class CIFAR100(Dataset):
     """
     CIFAR100 dataset from torchvision
     """
-    
-    DS_MASK = True
+    DS_NAME = 'cifar100'
+    DS_MASK = DS_NAME
     
     def __init__(self,root,train,transform,download):
         
