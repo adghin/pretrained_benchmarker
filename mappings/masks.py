@@ -7,7 +7,7 @@ def groundTruth(dataset):
     """
     Get the ground truth for each dataset.
     """
-    with open('/'+dataset+'.pkl','rb') as fp:
+    with open('./'+dataset+'.pkl','rb') as fp:
         ground_truth = pickle.load(fp)
     
     return ground_truth
