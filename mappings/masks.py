@@ -2,8 +2,8 @@
 Benchmarks of pre-trained pytorch models on common continual learning datasets
 @author: adrian.ghinea@outlook.it
 """
-
 import pickle
+import torch
 
 def groundTruth(dataset):
     """
@@ -22,7 +22,7 @@ def maskDataloader(image,label,dataset):
     Creates a mask for the dataloader by removing images that doesn't have a mapping at all.
     Only for CIFAR10/100.
     """
-    ground_truth = groundTruth(dataset)                                                #ground_truth contains matchings between CIFAR and Imagenet datasets
+    ground_truth = groundTruth(dataset)                                         #ground_truth contains matchings between CIFAR and Imagenet datasets
 
     image_list = [idx for idx in image]                                         #from tensor to list of tensors
     label_list = label.tolist()                                                 #from tensor to list
