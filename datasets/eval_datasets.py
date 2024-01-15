@@ -85,7 +85,7 @@ class TinyImagenetHD(Dataset):
         """        
         self.transform          = transform
         self.root               = root
-        self.download            = download
+        self.download           = download
 
         self.dataset_name       = 'tinyimagenet-hd'
         self.path               = os.path.join(root,self.dataset_name)
@@ -140,9 +140,9 @@ class ImagenetR(Dataset):
         """        
         self.transform          = transform
         self.root               = root
-        self.download            = download
+        self.download           = download
         
-        self.dataset_name       = 'tinyimagenet-r'
+        self.dataset_name       = 'imagenet-r'
         self.path               = os.path.join(root,self.dataset_name)
 
         if self.download:
@@ -151,11 +151,11 @@ class ImagenetR(Dataset):
             else:
                 from onedrivedownloader import download
                 print("Downloading dataset")
-                ln = 'https://studentiunict-my.sharepoint.com/:u:/g/personal/ghndrn00t01z129z_studium_unict_it/EZ9f00uX7EtJjaJxgbsmfk4BJ-VRgmWbpYeVnmYGnuLd1Q?e=Nyw26q'
+                ln = 'https://studentiunict-my.sharepoint.com/:u:/g/personal/ghndrn00t01z129z_studium_unict_it/ERF4aJ_1OM1NsrSwDO4i3xQB60a2N8M2crId6m7efgSl7A?e=v0KZTR'
                 download(ln, filename=os.path.join(root, 'eval-imagenet-r.zip'), unzip=True, unzip_path=root, clean=True)
 
         self.image_path         = os.path.join(self.path,'images')
-        self.annotations_file   = os.path.join(self.path,'tinyimagenet-r_annotations.csv')
+        self.annotations_file   = os.path.join(self.path,'imagenet-r_annotations.csv')
         self.img_labels         = pd.read_csv(self.annotations_file)
 
     def __len__(self):
@@ -163,11 +163,11 @@ class ImagenetR(Dataset):
         return len(self.img_labels)
     
     def __getitem__(self,idx):
-        img_path        = os.path.join(self.image_path,self.img_labels.iloc[idx,0])
+        img_path        = os.path.join(self.image_path,self.img_labels.iloc[idx,1])
 
         #To return a PIL Image
         original_img    = Image.open(img_path).convert('RGB')                                 
-        label           = self.img_labels.iloc[idx,1]                                        
+        label           = self.img_labels.iloc[idx,0]                                        
 
         #Apply augmentation (if given)
         if self.transform is not None:
