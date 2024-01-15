@@ -32,6 +32,8 @@ class TinyImagenet(Dataset):
 
         self.dataset_name       = 'tinyimagenet-nohd'
         path                    = os.path.join(root,self.dataset_name)
+
+        print(path)
         
         if download:
             if os.path.isdir(path) and len(os.listdir(path)) > 0:
@@ -42,8 +44,8 @@ class TinyImagenet(Dataset):
                 ln = 'https://studentiunict-my.sharepoint.com/:u:/g/personal/ghndrn00t01z129z_studium_unict_it/EdZ5w35EkRJCuOHi5I9-pjIBI5BmjY9i3cGvEYkwiBcTtQ?e=J11g32'
                 download(ln, filename=os.path.join(root, 'tinyimagenet-nohd.zip'), unzip=True, unzip_path=root, clean=True)
 
-        self.image_path         = os.path.join(root,'tinyimagenet-nohd/images')
-        self.annotations_file   = os.path.join(root,'tinyimagenet-nohd/tinyimagenet_annotations.csv')
+        self.image_path         = os.path.join(path,'images')
+        self.annotations_file   = os.path.join(path,'tinyimagenet_annotations.csv')
         self.img_labels         = pd.read_csv(self.annotations_file)
 
     def __len__(self):
