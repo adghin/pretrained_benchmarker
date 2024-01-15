@@ -200,7 +200,7 @@ class CIFAR10(datasets.CIFAR10):
             
         return image,label
 
-class CIFAR100(Dataset):
+class CIFAR100(datasets.CIFAR100):
     """
     CIFAR100 dataset from torchvision
     """
