@@ -106,9 +106,10 @@ def evaluateModel(model,dataset,device,args):
 def main():
     args = parseArgs()
 
+    dataset = get_dataset(args)
     device  = get_device(args.gpu)
     model   = get_model(args.model)
-    dataset = get_dataset(args.dataset)
+
     print(dataset)
     print(type(dataset))
 
