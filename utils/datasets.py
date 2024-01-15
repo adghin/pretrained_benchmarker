@@ -16,14 +16,16 @@ def get_dataset(args: Namespace):
     default_weights = transform_weights.DEFAULT
 
     #New preprocessings can be added here
-    preprocess = default_weights.transforms()
+    preprocess= default_weights.transforms()
+
+    print(preprocess)
     
     if dataset == 'cifar10':
         test_dataset = eval_datasets.CIFAR10(root='../data/',train=False,transform=preprocess,download=True)
     elif dataset == 'cifar100':
         test_dataset = eval_datasets.CIFAR100(root='../data/',train=False,transform=preprocess,download=True)
     elif dataset == 'tinyimagenet':
-        test_dataset = eval_datasets.TinyImagenet(root='../data/',transform=preprocess)
+        test_dataset = eval_datasets.TinyImagenet(root='../data/',transform=preprocess,download=True)
     elif dataset == 'tinyimagenet-hd':
         test_dataset = eval_datasets.TinyImagenetHD(root='../data/',transform=preprocess,download=True)
     elif dataset == 'tinyimagenet-r':
