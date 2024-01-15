@@ -1,8 +1,7 @@
 """
-Benchmarks of pre-trained pytorch models on common continual learning datasets
+Benchmarks of pre-trained pytorch models on common continual learning datasets.
 @author: adrian.ghinea@outlook.it
 """
-import pickle
 import argparse
 import importlib
 
@@ -13,11 +12,8 @@ import matplotlib.pyplot as plt
 import torch
 import torchvision as tv
 import torchvision.models as models
-import torchvision.datasets as datasets
-import torchvision.transforms as transforms
 
 from tqdm import tqdm
-from torch.utils.data import DataLoader
 
 from utils.conf import get_device
 from utils.datasets import get_dataset, get_dataloader
@@ -52,12 +48,6 @@ def get_model(model):
     else:
         return model
 
-def imshow(img):
-    img = img / 2 + 0.5
-    npimg = img.numpy()   
-    plt.imshow(np.transpose(npimg, (1, 2, 0))) 
-    plt.show()
-    #Use this function by calling imshow(tv.utils.make_grid(image))
 
 def evaluateModel(model,dataset,device,mask_dl=False):
     """
