@@ -20,7 +20,7 @@ class TinyImagenet(Dataset):
     All images will be transformed according to the default weights of
     the model used for the evaluation.
     """
-    DATASET_NAME = 'tinyimagenet'
+    DS_NAME = 'tinyimagenet'
     
     def __init__(self,root,transform,download):
         """
@@ -75,7 +75,7 @@ class TinyImagenetHD(Dataset):
     All images will be transformed according to the default weights of
     the model used for the evaluation.
     """
-    DATASET_NAME = 'tinyimagenet-hd'
+    DS_NAME = 'tinyimagenet-hd'
     
     def __init__(self,root,transform,download):
         """
@@ -130,7 +130,7 @@ class TinyImagenetR(Dataset):
     All images will be transformed according to the default weights of
     the model used for the evaluation.
     """
-    DATASET_NAME = 'tinyimagenet-r'
+    DS_NAME = 'tinyimagenet-r'
     
     def __init__(self,root,transform,download):
         """
@@ -180,7 +180,8 @@ class CIFAR10(datasets.CIFAR10):
     """
     CIFAR10 dataset from torchvision
     """
-    DS_MASK = True
+    DS_NAME = 'cifar10'
+    DS_MASK = DS_NAME
     
     def __init__(self,root,train,transform,download):
         
