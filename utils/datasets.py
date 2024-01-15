@@ -23,8 +23,15 @@ def get_dataset(args):
     default_weights = transform_weights.DEFAULT
 
     #New preprocessings can be added here
-    preprocess= default_weights.transforms()
+    #preprocess= default_weights.transforms()
 
+    preprocess = transforms.Compose([
+                            transforms.Resize(256, interpolation=transforms.InterpolationMode.BILINEAR),
+                            transforms.CenterCrop(224),
+                            transforms.ToTensor(),
+                            transforms.Normalize((0.485, 0.456, 0.406),(0.229, 0.224, 0.225))
+                            ])
+    
     print(preprocess)
     
     if dataset == 'cifar10':
