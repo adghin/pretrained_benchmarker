@@ -121,7 +121,7 @@ class TinyImagenetHD(Dataset):
         
         return original_img,label
 
-class TinyImagenetR(Dataset):
+class ImagenetR(Dataset):
     """
     Class for the custom TinyImagenet testset.
     As this dataset doesn't give labels for the test set,
@@ -130,7 +130,7 @@ class TinyImagenetR(Dataset):
     All images will be transformed according to the default weights of
     the model used for the evaluation.
     """
-    DS_NAME = 'tinyimagenet-r'
+    DS_NAME = 'imagenet-r'
     
     def __init__(self,root,transform,download):
         """
@@ -143,7 +143,7 @@ class TinyImagenetR(Dataset):
         sef.download            = download
         
         self.dataset_name       = 'tinyimagenet-r'
-        self.path                    = os.path.join(root,self.dataset_name)
+        self.path               = os.path.join(root,self.dataset_name)
 
         if self.download:
             if os.path.isdir(self.path) and len(os.listdir(self.path)) > 0:
@@ -152,7 +152,7 @@ class TinyImagenetR(Dataset):
                 from onedrivedownloader import download
                 print("Downloading dataset")
                 ln = 'https://studentiunict-my.sharepoint.com/:u:/g/personal/ghndrn00t01z129z_studium_unict_it/EZ9f00uX7EtJjaJxgbsmfk4BJ-VRgmWbpYeVnmYGnuLd1Q?e=Nyw26q'
-                download(ln, filename=os.path.join(root, 'eval-tiny-imagenet-r.zip'), unzip=True, unzip_path=root, clean=True)
+                download(ln, filename=os.path.join(root, 'eval-imagenet-r.zip'), unzip=True, unzip_path=root, clean=True)
 
         self.image_path         = os.path.join(self.path,'images')
         self.annotations_file   = os.path.join(self.path,'tinyimagenet-r_annotations.csv')
