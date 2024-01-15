@@ -27,3 +27,6 @@ To use the script, run:
 
     python main.py --model={model_name} --dataset={dataset_name}
 
+To see the list of available models and datasets names, along with optional arguments, simply run:
+
+    python main.py -h
