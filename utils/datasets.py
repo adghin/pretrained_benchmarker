@@ -54,14 +54,16 @@ def dl_mask_eligible(dataset):
     DS_ELIGIBLE = ['cifar10','cifar100']
     try:
         assert dataset.DS_NAME in DS_ELIGIBLE
-        return True
     except AssertionError:
         print("A dataloader mask cannot be applied on this dataset!")
+    else:
+        return True
         
-def imshow(img):
+def imshow(img_batch):
     """
     Display image
     """
+    img = tv.utils.make_grid(img_batch)
     img = img / 2 + 0.5
     npimg = img.numpy()   
     plt.imshow(np.transpose(npimg, (1, 2, 0))) 
