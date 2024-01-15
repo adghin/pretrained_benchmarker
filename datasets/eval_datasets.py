@@ -140,7 +140,7 @@ class ImagenetR(Dataset):
         """        
         self.transform          = transform
         self.root               = root
-        sef.download            = download
+        self.download            = download
         
         self.dataset_name       = 'tinyimagenet-r'
         self.path               = os.path.join(root,self.dataset_name)
