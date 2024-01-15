@@ -9,6 +9,9 @@ def groundTruth(dataset):
     """
     Get the ground truth for each dataset.
     """
+    if dataset == 'tinyimagenet-hd' or dataset == 'tinyimagenet-r':
+        dataset = 'tinyimagenet'
+        
     with open('mappings/' + dataset + '.pkl','rb') as fp:
         ground_truth = pickle.load(fp)
     
