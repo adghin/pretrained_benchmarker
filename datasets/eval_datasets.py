@@ -177,6 +177,11 @@ class TinyImagenetR(Dataset):
         return original_img,label
 
 class CIFAR10(datasets.CIFAR10):
+    """
+    CIFAR10 dataset from torchvision
+    """
+    DS_MASK = True
+    
     def __init__(self,root,train,transform,download):
         
         self.transform  = transform
@@ -200,6 +205,12 @@ class CIFAR10(datasets.CIFAR10):
         return image,label
 
 class CIFAR100(Dataset):
+    """
+    CIFAR100 dataset from torchvision
+    """
+    
+    DS_MASK = True
+    
     def __init__(self,root,train,transform,download):
         
         self.transform  = transform
