@@ -184,7 +184,7 @@ class CIFAR10(datasets.CIFAR10):
     DS_MASK = DS_NAME
     
     def __init__(self,root,train,transform,download):
-        
+        self.root       = root
         self.transform  = transform
         super(CIFAR10, self).__init__(root, train, transform, download=not self._check_integrity())
 
@@ -212,7 +212,7 @@ class CIFAR100(Dataset):
     DS_MASK = DS_NAME
     
     def __init__(self,root,train,transform,download):
-        
+        self.root       = root
         self.transform  = transform
         super(CIFAR10, self).__init__(root, train, transform, download=not self._check_integrity())
 
