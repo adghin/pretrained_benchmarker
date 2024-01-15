@@ -44,3 +44,10 @@ def get_dataloader(dataset):
     :return: dataloader
     """
     return DataLoader(dataset,batch_size=32,shuffle=False,drop_last=False)
+
+def dl_mask_eligible():
+    """
+    A dataloader mask can only be applied on datasets that do not have a 1:1 relationship with the source target (i.e. CIFAR10-ImageNet)
+    Assert that the dataset is eligible for a dataloader mask.
+    """
+    
