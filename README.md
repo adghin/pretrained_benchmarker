@@ -1,7 +1,7 @@
 # Benchmarks of pre-trained models on common continual learning datasets
 
 The script allows the evaluation of pre-trained models on common continual learning datasets. 
-As the models used are trained on ImageNet1K, some datasets may not have a 1:1 relationship with this dataset; in this case, a mask between the source and target dataset is applied (i.e. CIFAR-10 -- ImageNet1K).
+As the models used are trained on ImageNet1K, some datasets may not have a 1:1 mapping with this dataset; in this case, a mask between datasets is applied (i.e. CIFAR-10 -- ImageNet1K).
 Tiny-ImageNet and ImageNet-R do not need a mapping, as they are a subset of ImageNet1k.
 
 Available models:
