@@ -210,7 +210,7 @@ class CIFAR100(Dataset):
     def __init__(self,root,train,transform,download):
         self.root       = root
         self.transform  = transform
-        super(CIFAR10, self).__init__(root, train, transform, download=not self._check_integrity())
+        super(CIFAR100, self).__init__(root, train, transform, download=not self._check_integrity())
 
     def __getitem__(self,idx):
         image, label    = self.data[idx], self.targets[idx]
