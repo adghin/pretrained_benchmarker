@@ -33,10 +33,10 @@ class TinyImagenet(Dataset):
         self.download           = download
 
         self.dataset_name       = 'tinyimagenet-nohd'
-        path                    = os.path.join(root,self.dataset_name)
+        self.path               = os.path.join(root,self.dataset_name)
 
         if download:
-            if os.path.isdir(path) and len(os.listdir(path)) > 0:
+            if os.path.isdir(self.path) and len(os.listdir(self.path)) > 0:
                 print("Dataset already downloaded")
             else:
                 from onedrivedownloader import download
@@ -44,8 +44,8 @@ class TinyImagenet(Dataset):
                 ln = 'https://studentiunict-my.sharepoint.com/:u:/g/personal/ghndrn00t01z129z_studium_unict_it/EdZ5w35EkRJCuOHi5I9-pjIBI5BmjY9i3cGvEYkwiBcTtQ?e=J11g32'
                 download(ln, filename=os.path.join(root, 'eval-tinyimagenet-nohd.zip'), unzip=True, unzip_path=root, clean=True)
 
-        self.image_path         = os.path.join(path,'images')
-        self.annotations_file   = os.path.join(path,'tinyimagenet_annotations.csv')
+        self.image_path         = os.path.join(self.path,'images')
+        self.annotations_file   = os.path.join(self.path,'tinyimagenet_annotations.csv')
         self.img_labels         = pd.read_csv(self.annotations_file)
 
     def __len__(self):
@@ -88,10 +88,10 @@ class TinyImagenetHD(Dataset):
         self.download            = download
 
         self.dataset_name       = 'tinyimagenet-hd'
-        path                    = os.path.join(root,self.dataset_name)
+        self.path               = os.path.join(root,self.dataset_name)
 
         if download:
-            if os.path.isdir(path) and len(os.listdir(path)) > 0:
+            if os.path.isdir(self.path) and len(os.listdir(self.path)) > 0:
                 print("Dataset already downloaded")
             else:
                 from onedrivedownloader import download
@@ -99,8 +99,8 @@ class TinyImagenetHD(Dataset):
                 ln = 'https://studentiunict-my.sharepoint.com/:u:/g/personal/ghndrn00t01z129z_studium_unict_it/EVEsZyVoaCxCkNKCSzQAKkkBgayxsFFhFTu_AeZKyA1vug?e=M0UCla'
                 download(ln, filename=os.path.join(root, 'eval-tinyimagenet-hd.zip'), unzip=True, unzip_path=root, clean=True)
 
-        self.image_path         = os.path.join(path,'images')
-        self.annotations_file   = os.path.join(path,'tinyimagenet_annotations.csv')
+        self.image_path         = os.path.join(self.path,'images')
+        self.annotations_file   = os.path.join(self.path,'tinyimagenet_annotations.csv')
         self.img_labels         = pd.read_csv(self.annotations_file)
 
     def __len__(self):
@@ -143,10 +143,10 @@ class TinyImagenetR(Dataset):
         sef.download            = download
         
         self.dataset_name       = 'tinyimagenet-r'
-        path                    = os.path.join(root,self.dataset_name)
+        self.path                    = os.path.join(root,self.dataset_name)
 
         if self.download:
-            if os.path.isdir(path) and len(os.listdir(path)) > 0:
+            if os.path.isdir(self.path) and len(os.listdir(self.path)) > 0:
                 print("Dataset already downloaded")
             else:
                 from onedrivedownloader import download
@@ -154,8 +154,8 @@ class TinyImagenetR(Dataset):
                 ln = 'https://studentiunict-my.sharepoint.com/:u:/g/personal/ghndrn00t01z129z_studium_unict_it/EZ9f00uX7EtJjaJxgbsmfk4BJ-VRgmWbpYeVnmYGnuLd1Q?e=Nyw26q'
                 download(ln, filename=os.path.join(root, 'eval-tiny-imagenet-r.zip'), unzip=True, unzip_path=root, clean=True)
 
-        self.image_path         = os.path.join(path,'images')
-        self.annotations_file   = os.path.join(path,'tinyimagenet-r_annotations.csv')
+        self.image_path         = os.path.join(self.path,'images')
+        self.annotations_file   = os.path.join(self.path,'tinyimagenet-r_annotations.csv')
         self.img_labels         = pd.read_csv(self.annotations_file)
 
     def __len__(self):
@@ -188,10 +188,6 @@ class CIFAR10(datasets.CIFAR10):
         self.transform  = transform
         super(CIFAR10, self).__init__(root, train, transform, download=not self._check_integrity())
 
-    def __len__(self):
-        #To return the size of the dataset
-        return len(self.img_labels)
-
     def __getitem__(self,idx):
         imgage, label      = self.data[idx], self.targets[idx]
 
@@ -215,10 +211,6 @@ class CIFAR100(Dataset):
         self.root       = root
         self.transform  = transform
         super(CIFAR10, self).__init__(root, train, transform, download=not self._check_integrity())
-
-    def __len__(self):
-        #To return the size of the dataset
-        return len(self.img_labels)
 
     def __getitem__(self,idx):
         imgage, label      = self.data[idx], self.targets[idx]
