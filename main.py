@@ -3,7 +3,6 @@ Benchmarks of pre-trained pytorch models on common continual learning datasets.
 @author: adrian.ghinea@outlook.it
 @version: final release, 15/01/2024
 """
-
 import argparse
 
 import torch
@@ -64,10 +63,8 @@ def evaluateModel(model,dataset,device,mask_dl=False):
         for image,label in tqdm(test_loader):
             if mask_dl and dl_mask_eligible(dataset):
                 masked_image, masked_label = maskDataloader(image,label,dataset.DS_NAME)
-                image, label = masked_image, masked_label
-
-            imshow(image)
-            
+                image, label = masked_image, masked_label            
+                
             image, label = image.to(device), label.to(device)
 
             prediction      = model(image).softmax(dim=1)
