@@ -20,7 +20,7 @@ class TinyImagenet(Dataset):
     All images will be transformed according to the default weights of
     the model used for the evaluation.
     """
-    def __init__(self,root,transform,download: bool):
+    def __init__(self,root,transform,download):
         """
         param: annotations_file (string): path to the csv file with annotations
         param: img_dir          (string): path to dir with images from validation set
@@ -33,8 +33,6 @@ class TinyImagenet(Dataset):
         self.dataset_name       = 'tinyimagenet-nohd'
         path                    = os.path.join(root,self.dataset_name)
 
-        print(path)
-        
         if download:
             if os.path.isdir(path) and len(os.listdir(path)) > 0:
                 print("Dataset already downloaded")
@@ -42,7 +40,7 @@ class TinyImagenet(Dataset):
                 from onedrivedownloader import download
                 print("Downloading dataset")
                 ln = 'https://studentiunict-my.sharepoint.com/:u:/g/personal/ghndrn00t01z129z_studium_unict_it/EdZ5w35EkRJCuOHi5I9-pjIBI5BmjY9i3cGvEYkwiBcTtQ?e=J11g32'
-                download(ln, filename=os.path.join(root, 'tinyimagenet-nohd.zip'), unzip=True, unzip_path=root, clean=True)
+                download(ln, filename=os.path.join(root, 'eval-tinyimagenet-nohd.zip'), unzip=True, unzip_path=root, clean=True)
 
         self.image_path         = os.path.join(path,'images')
         self.annotations_file   = os.path.join(path,'tinyimagenet_annotations.csv')
@@ -84,17 +82,20 @@ class TinyImagenetHD(Dataset):
         self.root               = root
         self.download            = download
 
+        self.dataset_name       = 'tinyimagenet-hd'
+        path                    = os.path.join(root,self.dataset_name)
+
         if download:
-            if os.path.isdir(root) and len(os.listdir(root)) > 0:
+            if os.path.isdir(path) and len(os.listdir(path)) > 0:
                 print("Dataset already downloaded")
             else:
                 from onedrivedownloader import download
                 print("Downloading dataset")
                 ln = 'https://studentiunict-my.sharepoint.com/:u:/g/personal/ghndrn00t01z129z_studium_unict_it/EVEsZyVoaCxCkNKCSzQAKkkBgayxsFFhFTu_AeZKyA1vug?e=M0UCla'
-                download(ln, filename=os.path.join(root, 'eval-tiny-imagenet-hd.zip'), unzip=True, unzip_path=root, clean=True)
+                download(ln, filename=os.path.join(root, 'eval-tinyimagenet-hd.zip'), unzip=True, unzip_path=root, clean=True)
 
-        self.image_path         = os.path.join(root,'tinyimagenet-hd/images')
-        self.annotations_file   = os.path.join(root,'tinyimagenet-hd/tinyimagenet_annotations.csv')
+        self.image_path         = os.path.join(path,'images')
+        self.annotations_file   = os.path.join(root,'tinyimagenet_annotations.csv')
         self.img_labels         = pd.read_csv(self.annotations_file)
 
     def __len__(self):
@@ -132,9 +133,12 @@ class TinyImagenetR(Dataset):
         self.transform          = transform
         self.root               = root
         sef.download            = download
+        
+        self.dataset_name       = 'tinyimagenet-r'
+        path                    = os.path.join(root,self.dataset_name)
 
         if self.download:
-            if os.path.isdir(root) and len(os.listdir(root)) > 0:
+            if os.path.isdir(path) and len(os.listdir(path)) > 0:
                 print("Dataset already downloaded")
             else:
                 from onedrivedownloader import download
@@ -142,8 +146,8 @@ class TinyImagenetR(Dataset):
                 ln = 'https://studentiunict-my.sharepoint.com/:u:/g/personal/ghndrn00t01z129z_studium_unict_it/EZ9f00uX7EtJjaJxgbsmfk4BJ-VRgmWbpYeVnmYGnuLd1Q?e=Nyw26q'
                 download(ln, filename=os.path.join(root, 'eval-tiny-imagenet-r.zip'), unzip=True, unzip_path=root, clean=True)
 
-        self.image_path         = os.path.join(root,'tinyimagenet-r/images')
-        self.annotations_file   = os.path.join(root,'tinyimagenet-r/tinyimagenet-r_annotations.csv')
+        self.image_path         = os.path.join(path,'images')
+        self.annotations_file   = os.path.join(path,'tinyimagenet-r_annotations.csv')
         self.img_labels         = pd.read_csv(self.annotations_file)
 
     def __len__(self):
