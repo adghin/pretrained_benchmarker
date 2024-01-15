@@ -8,11 +8,13 @@ from utils.conf import base_path
 
 from torch.utils.data import DataLoader
 
-def get_dataset(dataset):
+def get_dataset(args):
     """
     Get the test_set for the evaluation experiment
     :return: dataset
     """
+    dataset = args.dataset
+    
     transform_weights = models.get_model_weights(args.model)
     default_weights = transform_weights.DEFAULT
 
