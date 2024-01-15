@@ -3,8 +3,6 @@ Benchmarks of pre-trained pytorch models on common continual learning datasets.
 @author: adrian.ghinea@outlook.it
 """
 import argparse
-
-import utils
 import numpy as np
 
 import torch
@@ -13,8 +11,8 @@ import torchvision.models as models
 from tqdm import tqdm
 
 from utils.conf import get_device
-from utils.datasets import get_dataset, get_dataloader
 from mappings.masks import maskSoftmax, maskDataloader
+from utils.datasets import get_dataset, get_dataloader, imshow
 
 def parseArgs():
     """
@@ -44,7 +42,6 @@ def get_model(model):
         raise NameError("Unknown model: " + model_name)
     else:
         return model
-
 
 def evaluateModel(model,dataset,device,mask_dl=False):
     """
