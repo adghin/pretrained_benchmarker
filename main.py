@@ -3,14 +3,11 @@ Benchmarks of pre-trained pytorch models on common continual learning datasets.
 @author: adrian.ghinea@outlook.it
 """
 import argparse
-import importlib
 
 import utils
 import numpy as np
-import matplotlib.pyplot as plt
 
 import torch
-import torchvision as tv
 import torchvision.models as models
 
 from tqdm import tqdm
